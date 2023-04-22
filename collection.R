@@ -12,7 +12,8 @@ data.frame(datum_start  = seq(ymd("2018-01-01"),
                               by = 365)) %>%
   mutate(datum_end = lead(datum_start)-1) %>%
   mutate(datum_end = if_else(is.na(datum_end),ymd("2022-11-01"),datum_end))-> date
-  
+
+#script for data collection training BERT
 for(i in 1:nrow(date)){
   
   output <- try({
@@ -268,6 +269,13 @@ oral_questions_and_interpellations %>%
   mutate(text = str_replace_all(text, '<span style="vertical-align:sub;">', "")) %>%
   mutate(text = str_replace(text, "&#39;", "'")) %>%
   mutate(text = str_replace(text, "&rsquo;", "'"))-> df_speech
+
+write.csv(df_speech, file = "~/pollob/data/df_speech.csv")
+
+df_speech %>%
+  select(text) -> training_text
+
+write.csv(training_text, file = "~/pollob/data/training_text.csv")
 
 df_speech %>%
   
